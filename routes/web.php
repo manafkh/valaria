@@ -29,21 +29,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/call', function () {
-    return view('users.Questionnaires.index');
-});
-
-Route::get('/soso',function (){
-    $category = Category::with('Styles','CategoryDetails')->find(14);
-   return     $category;
-
-});
-
-
-Route::get('/new', function () {
-    return view('newform');
-});
-
 //TODO home page user
 Route::get('/home', function () {
     return view('users.home');

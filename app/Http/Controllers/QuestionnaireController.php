@@ -40,7 +40,7 @@ class QuestionnaireController extends Controller
 
             'category_id'=> $request->category_id,
             'user_id'=>Auth::user()->id,
-            'style_id'=> 1,
+            'style_id'=> $request->style_id,
             'project_name'=> $request->name,
             'project_description'=> $request->description,
             'project_address'=> "no address",

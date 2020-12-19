@@ -350,7 +350,7 @@
     width: 90px;
     height: 90px;
     margin: auto;
-    padding: 5px;
+    padding: 10px;
 }
 .card-image:hover{
     opacity: 1;

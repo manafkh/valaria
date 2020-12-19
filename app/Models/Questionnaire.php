@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Questionnaire extends Model
 {
     use HasFactory;
-    protected $fillable = ['category_id','style_id','project_name','project_description','project_address','files','links','budget_range'];
+    protected $fillable = ['category_id','user_id','style_id','project_name','project_description','project_address','files','links','budget_range'];
 
 
     public function files(){

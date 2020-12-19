@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Questionnaire;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -14,7 +17,9 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('users.Profiles.index');
+        $user = Auth::user();
+        $questionnaires = Questionnaire::where('user_id',$user->id)->get();
+        return view('users.Profiles.index',compact(['user','questionnaires']));
     }
 
     /**
@@ -58,7 +63,7 @@ class ProfileController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('users.Profiles.edit');
+        return view('users.Profiles.edit',compact('user'));
     }
 
     /**
@@ -71,9 +76,13 @@ class ProfileController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-        $this->userRepository->update($request,$user);
-
-        return redirect(route('users.profiles.index'));
+        if ($request->password != null){
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
+        $user->update($request->only(['username','email','user_role','first_name','last_name',
+            'address_1','address_2','emirates_national_id','phone','city']));
+        return redirect(route('profiles.index'));
     }
 
     /**
