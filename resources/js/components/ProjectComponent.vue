@@ -53,7 +53,8 @@
                             <button @click.prevent="prev()" class="btn" style="background:black; color:#c6c8ca">previous</button>
                         </div>
                     </fieldset>
-                    <fieldset v-if="step === 2 && this.childs.length !== 0">
+                    <fieldset v-if="step === 2 && this.childs.length !== 0 && steps[steps.length -1] !== 83">
+
                         <div class="vld-parent panel-body">
                             <Loading :active.sync="isLoading"
                                      :can-cancel="true"
@@ -79,7 +80,7 @@
 
                         </div>
                     </fieldset>
-                    <fieldset v-if="step === 3 && this.childs.length !== 0">
+                    <fieldset v-else-if="step === 3 && this.childs.length !== 0 || steps[steps.length -1] === 83">
                         <div class="vld-parent panel-body">
 
                             <Loading :active.sync="isLoading"
@@ -141,13 +142,13 @@
                                     <label>Upload File Design</label>
                                     <input class="form-control" type="file" v-on:change="onFileChange" >
                                 </div>
-                                <div class="col-lg-6 co-sm-12 form-group" >
-                                    <label for="styles">select Budget</label>
-                                    <select id="styles"  class="form-control" v-model="project.budget">
-                                        <option v-for="budget in budgets" v-bind:value="budget">
-                                            {{ budget }}
-                                        </option>
-                                    </select>
+                                <div class="col-lg-3 co-sm-6 form-group">
+                                    <label>Budget</label>
+                                    <input class="form-control" type="number" v-model="budgets.budget_from" placeholder="1000">
+                                </div>
+                                <div class="col-lg-3 co-sm-6 form-group">
+                                    <label>To:</label>
+                                    <input class="form-control" type="number" v-model="budgets.budget_to" placeholder="2000" v-on:change="sum">
                                 </div>
 
                             </div>
@@ -202,7 +203,10 @@
                 file:'',
                 successes:[],
                 styles:[],
-                budgets:['1000 - 5000 $','5000 - 10000 $','10000 - 20000 $' , 'others'],
+                budgets:{
+                    budget_from:'',
+                    budget_to:'',
+                },
                 steps:[],
                 errors:[],
                 step: 0,
@@ -273,7 +277,7 @@
                     headers: { 'content-type': 'multipart/form-data' }
                 };
 
-                if (this.project.budget && this.project.name && this.project.description && this.project.style_id) {
+                if ((this.budgets.budget_to - this.budgets.budget_from) > 0 && this.project.name && this.project.description && this.project.style_id) {
                     axios.post('createproject',formData,config).then(res =>{
 
                     }).catch(err=>{
@@ -288,8 +292,8 @@
 
                 this.errors = [];
 
-                if (!this.project.budget) {
-                    this.errors.push('Budget required.');
+                if ((this.budgets.budget_to - this.budgets.budget_from) < 0) {
+                    this.errors.push('Budget not correct.');
                 }
                 if (!this.project.name) {
                     this.errors.push('Name required.');
@@ -320,6 +324,9 @@
                 axios.get('styles/'+ this.steps[this.steps.length -1]).then(res=>{
                     this.styles = res.data;
                 })
+            },
+            sum(){
+                this.project.budget = this.budgets.budget_from + ' - '+ this.budgets.budget_to ;
             },
             onCancel() {
                 console.log('User cancelled the loader.')

@@ -43,6 +43,13 @@ class ImagesSeeder extends Seeder
                 ]);
             }
 
+            if ($category->parent_id == 83) {
+                $category->update([
+                    'image' => "images/landscape/" . $category->name . ".jpg",
+                    'image_opacity' => "images/landscape/" . $category->name . "-opacity.jpg"
+                ]);
+            }
+
 
         }
     }
