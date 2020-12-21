@@ -16,13 +16,17 @@ class Category extends Model
      */
     protected $fillable = [
         'name',
-        'parent_id'
+        'parent_id',
+        'image_opacity',
+        'image',
+        'image_icon',
+        'category_details_id'
     ];
 
     public function styles(){
         return $this->belongsToMany(Style::class,'category_styles','category_id','style_id');
     }
     public function categoryDetails(){
-        return $this->hasOne(CategoryDetails::class);
+        return $this->belongsTo(CategoryDetails::class);
     }
 }

@@ -62,12 +62,15 @@ class QuestionnaireController extends Controller
             ]);
         }
 
-        if ($files =$request->file){
-            $fileName = time().'.'.$files->getClientOriginalExtension();
-            $path = $files->move('upload', $fileName);
-            $questionnaire->files()->create([
-                'file'=>$path
-            ]);
+        if ($files =$request->file('files')){
+            foreach ($files as $file){
+                $fileName = time().'.'.$file->getClientOriginalExtension();
+                $path = $file->move('upload', $fileName);
+                $questionnaire->files()->create([
+                    'file'=>$path
+                ]);
+            }
+
         }
 
 

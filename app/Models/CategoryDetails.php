@@ -20,7 +20,7 @@ class CategoryDetails extends Model
     public function styles(){
         return $this->hasMany(Style::class);
     }
-    public function category(){
-        return $this->belongsTo(Category::class);
+    public function categories(){
+        return $this->hasMany(Category::class);
     }
 }

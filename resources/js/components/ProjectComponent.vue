@@ -1,34 +1,30 @@
 <template>
-    <div class="container font-form">
+    <div class="font-form">
 
-            <div class="justify-content-center">
                 <form @submit="submit" enctype="multipart/form-data">
 
-                    <div v-if="step === 0">
+                    <div v-if="step === 0" >
                             <Loading :active.sync="isLoading"
                                      :can-cancel="true"
                                      :loader="loader"
                                      :on-cancel="onCancel"
                                      :width="110"
                                      :height="110"
-                                     :opacity=0.5
+                                     :opacity="1"
                                    ></Loading>
                             <br>
                             <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-8 col-12" v-for="child in childs">
-                                    <div class="card" style="width: 16rem;">
-                                        <img class="card-img-top card-image"  :src="child.image_icon"  alt="Card image cap">
+                                <div class="col-lg-4 col-md-4 col-sm-4 " v-for="(child,childname) in childs">
+                                    <div @click.prevent="next(child.id)" v-tooltip="child.category_details ? child.category_details.description : 'no description'" class="card" style="width: 16rem; cursor:pointer;">
+                                        <img class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
                                         <div class="card-body">
-                                            <h5 class="card-title text-center">{{child.name}}</h5>
-                                            <p class="card-text text-center">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <p class="card-title text-center"><strong>{{child.name}}</strong></p>
                                         </div>
-                                        <button @click.prevent="next(child.id)" class="btn" style="background:black; color:#c6c8ca">Get start</button>
-
                                     </div>
                                 </div>
                             </div>
                     </div>
-                    <fieldset class="justify-content-center" v-if="step === 1">
+                    <fieldset v-if="step === 1">
                         <div class="vld-parent panel-body">
                             <Loading :active.sync="isLoading"
                                      :can-cancel="true"
@@ -36,24 +32,24 @@
                                      :on-cancel="onCancel"
                                      :width="110"
                                      :height="110"
-                                     :opacity="0.5"
+                                     :opacity="1"
                             ></Loading>
                             <br>
                             <div class="row">
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" v-for="child in childs">
-                                    <div class="card" style="width: 16rem;">
-                                        <div class="card-body">
+                                    <div @click.prevent="next(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'" style="width: 16rem; cursor:pointer;">
+                                        <img v-if="child.image_icon != null" class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
+                                        <img v-else-if="child.image != null" class="card-img-top" style="width: 16rem; height: 14rem;  border-radius: 12px; padding: 5px;" v-bind:src="mouseOverCheck === child.id ? child.image : child.image_opacity" v-on:mouseover="mouseOverCheck = child.id"  v-on:mouseout="mouseOverCheck = ''"/>
+                                        <div v-if="child.image_icon != null" class="card-body">
                                             <h5 class="card-title text-center">{{child.name}}</h5>
-                                            <p class="card-text">Some quick example text to build on the image title and make up the bulk of the image's content.</p>
                                         </div>
-                                        <button @click.prevent="next(child.id)" class="btn" style="background:black; color:#c6c8ca">Checked</button>
                                     </div>
                                 </div>
                             </div>
-                            <button @click.prevent="prev()" class="btn" style="background:black; color:#c6c8ca">previous</button>
+                            <button @click.prevent="prev()" class="btn">previous</button>
                         </div>
                     </fieldset>
-                    <fieldset v-if="step === 2 && this.childs.length !== 0 && steps[steps.length -1] !== 83">
+                    <fieldset v-if="step === 2 && this.childs.length !== 0">
 
                         <div class="vld-parent panel-body">
                             <Loading :active.sync="isLoading"
@@ -62,25 +58,25 @@
                                      :on-cancel="onCancel"
                                      :width="110"
                                      :height="110"
-                                     :opacity="0.5"
+                                     :opacity="1"
                             ></Loading>
                             <br>
                             <div class="row">
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 " v-for="child in childs">
-                                    <div class="card" style="width: 16rem;">
-                                        <img class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
-                                        <div class="card-body">
+                                    <div v-on:click="getstyle(child.id)" @click.prevent="next(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'" v-model="project.category_id = child.id" style="width: 16rem; cursor:pointer;">
+                                        <img v-if="child.image_icon != null" class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
+                                        <img v-else-if="child.image != null" class="card-img-top" style="width: 16rem; height: 14rem; border-radius: 12px; padding: 5px;" v-bind:src="mouseOverCheck === child.id ? child.image : child.image_opacity" v-on:mouseover="mouseOverCheck = child.id"  v-on:mouseout="mouseOverCheck = ''"/>
+                                        <div v-if="child.image_icon != null" class="card-body">
                                             <h6 class="card-text text-center">{{child.name}}</h6>
                                         </div>
-                                        <button @click.prevent="next(child.id)" class="btn" style="background:black; color:#c6c8ca">Checked</button>
                                     </div>
                                 </div>
                             </div>
-                            <button @click.prevent="prev()" class="btn" style="background:black; color:#c6c8ca">previous</button>
+                            <button @click.prevent="prev()" class="btn">previous</button>
 
                         </div>
                     </fieldset>
-                    <fieldset v-else-if="step === 3 && this.childs.length !== 0 || steps[steps.length -1] === 83">
+                    <fieldset v-else-if="step === 3 && this.childs.length !== 0">
                         <div class="vld-parent panel-body">
 
                             <Loading :active.sync="isLoading"
@@ -89,32 +85,33 @@
                                      :on-cancel="onCancel"
                                      :width="110"
                                      :height="110"
-                                     :opacity="0.5"
+                                     :opacity="1"
                             ></Loading>
                             <br>
                             <div class="row">
-                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6" v-for="child in childs">
-                                    <div class="card " style="width: 16rem;">
-                                        <img class="card-img-top" style="width: 16rem; height: 14rem;" v-bind:src="mouseOverCheck === child.id ? child.image : child.image_opacity" v-on:mouseover="mouseOverCheck = child.id"  v-on:mouseout="mouseOverCheck = ''"/>
-                                        <div class="card-body">
+                                <div  class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6" v-for="child in childs" >
+                                    <div v-on:click="getstyle(child.id)"  @click.prevent="next(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'"  v-model="project.category_id = child.id" style="width: 16rem; cursor:pointer;">
+                                        <img v-if="child.image_icon != null" class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
+                                        <img v-else-if="child.image != null" class="card-img-top" style="width: 16rem; height: 14rem; border-radius: 12px; padding: 5px;" v-bind:src="mouseOverCheck === child.id ? child.image : child.image_opacity" v-on:mouseover="mouseOverCheck = child.id"  v-on:mouseout="mouseOverCheck = ''"/>
+                                        <div v-if="child.image_icon != null" class="card-body">
                                             <h6 class="card-text text-center">{{child.name}}</h6>
                                         </div>
-                                        <button @click.prevent="next(child.id)"  v-model="project.category_id = child.id" class="btn" style="background:black; color:#c6c8ca">Checked</button>
                                     </div>
                                 </div>
                             </div>
-                            <button @click.prevent="prev()" class="btn" style="background:black; color:#c6c8ca">previous</button>
+                            <button @click.prevent="prev()" class="btn">previous</button>
+
                         </div>
                     </fieldset>
-                    <fieldset v-else-if="step === 3 && this.childs.length === 0 || step === 4 || step === 2 && this.childs.length === 0">
-                        <div class="panel-body">
+                    <fieldset v-else-if="step === 3 && this.childs.length === 0 || step === 4 || step === 2 && this.childs.length === 0"  style="box-shadow:dimgrey -1px 5px 5px 7px;">
+                        <div class="panel-body" >
                             <Loading :active.sync="isLoading"
                                      :can-cancel="true"
                                      :loader="loader"
                                      :on-cancel="onCancel"
                                      :width="110"
                                      :height="110"
-                                     :opacity="0.5"
+                                     :opacity="1"
                             ></Loading>
                             <h3 class="text-center">Answer the questionnaire</h3>
                             <div v-if="errors.length" class="alert alert-dark" role="alert">
@@ -128,9 +125,9 @@
                                     <label>Project Name</label>
                                     <input class="form-control" type="text" v-model="project.name" placeholder="flat build">
                                 </div>
-                                <div class="col-lg-6 co-sm-12 form-group" >
+                                <div v-if="styles.length !== 0" class="col-lg-6 co-sm-12 form-group" >
                                     <label for="budgets">select Style</label>
-                                    <select v-on:click="getstyle" id="budgets" class="form-control" v-model="project.style_id">
+                                    <select id="budgets" class="form-control" v-model="project.style_id">
                                         <option v-for="style in styles" v-bind:value="style.id">
                                             {{ style.name }}
                                         </option>
@@ -140,7 +137,7 @@
                             <div class="row form-group">
                                 <div class="col-lg-6 co-sm-12 form-group">
                                     <label>Upload File Design</label>
-                                    <input class="form-control" type="file" v-on:change="onFileChange" >
+                                    <input class="form-control" type="file" ref="file" multiple="multiple" >
                                 </div>
                                 <div class="col-lg-3 co-sm-6 form-group">
                                     <label>Budget</label>
@@ -173,8 +170,14 @@
 
                                 </textarea>
                             </div>
-                            <button class="btn" style="background:black; color:#c6c8ca">save</button>
-                            <button @click.prevent="prev()" class="btn" style="background:black; color:#c6c8ca">previous</button>
+
+                                    <button @click.prevent="prev()" class="btn pull-left">previous</button>
+                                    <button class="btn pull-right" style="margin-left: 940px;" >Confirm</button>
+
+
+
+
+
 
                         </div>
                     </fieldset>
@@ -184,12 +187,10 @@
                         <h4 class="heading mb-4 pb-1 text-center">Confirmation</h4>
                             <p class="text-center">Form has been submitted Successfully ! <br>You will recieve estimation on your email id
                                 and contact no.</p>
-                        <div class="row justify-content-center"> <img src="https://i.imgur.com/krsWHvd.gif"
-                                                                      class="check">
+                        <div class="row justify-content-center"> <img src="assets\img\form.gif" style="  max-width: 75%;box-shadow: 5px 5px 5px dimgrey;" class="check">
                         </div>
                     </div>
                 </div>
-            </div>
 
     </div>
 </template>
@@ -200,7 +201,7 @@
     export default {
         data() {
             return {
-                file:'',
+                file:[],
                 successes:[],
                 styles:[],
                 budgets:{
@@ -249,8 +250,9 @@
             },
             next(parent) {
                 this.isLoading = true;
+                axios.get('category/'+ parent).then(response=>{this.childs = response.data;});
                 setTimeout(() => {
-                    axios.get('category/'+ parent).then(response=>{this.childs = response.data;});
+
                     this.step++;
                     this.steps.push(parent);
                     this.isLoading = false;
@@ -260,9 +262,11 @@
             submit(e) {
 
 
+
                 let formData = new FormData();
-                if (this.file !=null || this.file !== undefined ) {
-                    formData.append('file', this.file);
+                for( var i = 0; i < this.$refs.file.files.length; i++ ){
+                    let file = this.$refs.file.files[i];
+                    formData.append('files[' + i + ']', file);
                 }
                 formData.append('category_id', this.project.category_id);
                 formData.append('style_id', this.project.style_id);
@@ -277,9 +281,9 @@
                     headers: { 'content-type': 'multipart/form-data' }
                 };
 
-                if ((this.budgets.budget_to - this.budgets.budget_from) > 0 && this.project.name && this.project.description && this.project.style_id) {
+                if ((this.budgets.budget_to - this.budgets.budget_from) > 0 && this.project.name && this.project.description ) {
                     axios.post('createproject',formData,config).then(res =>{
-
+                                console.log(res.data);
                     }).catch(err=>{
                        this.errors.push(err);
                     });
@@ -301,9 +305,6 @@
                 if (!this.project.description) {
                     this.errors.push('Description required.');
                 }
-                if (!this.project.style_id) {
-                    this.errors.push('Style required.');
-                }
 
                 e.preventDefault();
 
@@ -320,9 +321,10 @@
                     console.log("hi")
                 })
             },
-            getstyle(){
-                axios.get('styles/'+ this.steps[this.steps.length -1]).then(res=>{
+            getstyle(style_id){
+                axios.get('styles/'+ style_id).then(res=>{
                     this.styles = res.data;
+                    console.log(this.styles);
                 })
             },
             sum(){
@@ -331,10 +333,7 @@
             onCancel() {
                 console.log('User cancelled the loader.')
             },
-            onFileChange(e){
-                console.log(e.target.files[0]);
-                this.file = e.target.files[0];
-            }
+
         },
         components: {
             Loading
@@ -347,12 +346,7 @@
 .font-form{
     font-family: "Open Sans Semibold";
 }
-/*@media only screen and (max-width: 768px) {*/
-    /*!* For mobile phones: *!*/
-  /*.card{*/
-      /*display: none;*/
-  /*}*/
-/*}*/
+
 .card-image{
     width: 90px;
     height: 90px;
@@ -363,7 +357,17 @@
     opacity: 1;
 
 }
+button {
+    background:black;
+    color:#c6c8ca ;
+}
 button:hover{
-    opacity: 0.7;
+    background:#c6c8ca;
+    color: #0c0c0c;
+}
+.card:hover{
+    background: #0c0c0c;
+    color: #c6c8ca;
+    box-shadow: 5px 5px 5px dimgrey;
 }
 </style>

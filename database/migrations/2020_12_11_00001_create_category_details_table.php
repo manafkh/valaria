@@ -15,7 +15,6 @@ class CreateCategoryDetailsTable extends Migration
     {
         Schema::create('category_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('category_id')->nullable();
             $table->string('name')->unique();
             $table->text('description');
             $table->tinyInteger('has_styles');

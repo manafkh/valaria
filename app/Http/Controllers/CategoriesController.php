@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 class CategoriesController extends Controller
 {
     public function getCategory($id){
-        $categories = Category::where('parent_id',$id)->get();
+        $categories = Category::where('parent_id',$id)->with(['categoryDetails','styles'])->get();
         return response()->json($categories);
     }
     public function parent(){
-        $categories = Category::where('parent_id',null)->get();
+        $categories = Category::where('parent_id',null)->with('categoryDetails')->get();
         return response()->json($categories);
     }
     public function grandparent($id){

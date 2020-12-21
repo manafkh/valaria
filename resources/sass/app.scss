@@ -8,64 +8,100 @@
 @import '~bootstrap/scss/bootstrap';
 
 
-@import '~pretty-checkbox/src/pretty-checkbox.scss';
 
-/* REQUIRED */
-@import '~pretty-checkbox/src/scss/variables';
-@import '~pretty-checkbox/src/scss/core';
 
-/* OPTIONALS */
-@import '~pretty-checkbox/src/scss/elements/default/fill';
-@import '~pretty-checkbox/src/scss/elements/default/outline';
-@import '~pretty-checkbox/src/scss/elements/default/thick';
+//tooltip active
 
-@import '~pretty-checkbox/src/scss/elements/font-icon/general';
+.tooltip {
+  display: block !important;
+  z-index: 10000;
 
-@import '~pretty-checkbox/src/scss/elements/svg/general';
+  .tooltip-inner {
+    background: black;
+    color: white;
+    border-radius: 16px;
+    padding: 5px 10px 4px;
+  }
 
-@import '~pretty-checkbox/src/scss/elements/image/general';
+  .tooltip-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: 5px;
+    border-color: black;
+    z-index: 1;
+  }
 
-@import '~pretty-checkbox/src/scss/elements/switch/general';
-@import '~pretty-checkbox/src/scss/elements/switch/fill';
-@import '~pretty-checkbox/src/scss/elements/switch/slim';
+  &[x-placement^="top"] {
+    margin-bottom: 5px;
 
-@import '~pretty-checkbox/src/scss/extras/toggle';
-@import '~pretty-checkbox/src/scss/extras/plain';
-@import '~pretty-checkbox/src/scss/extras/round';
-@import '~pretty-checkbox/src/scss/extras/curve';
-@import '~pretty-checkbox/src/scss/extras/animation';
-@import '~pretty-checkbox/src/scss/extras/disabled';
-@import '~pretty-checkbox/src/scss/extras/locked';
-@import '~pretty-checkbox/src/scss/extras/colors';
-@import '~pretty-checkbox/src/scss/extras/print';
+    .tooltip-arrow {
+      border-width: 5px 5px 0 5px;
+      border-left-color: transparent !important;
+      border-right-color: transparent !important;
+      border-bottom-color: transparent !important;
+      bottom: -5px;
+      left: calc(50% - 5px);
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
 
-@import '~pretty-checkbox/src/scss/states/hover';
-@import '~pretty-checkbox/src/scss/states/focus';
-@import '~pretty-checkbox/src/scss/states/indeterminate';
+  &[x-placement^="bottom"] {
+    margin-top: 5px;
 
-// If you felt the name is not-so-pretty,
-// you can always change!
+    .tooltip-arrow {
+      border-width: 0 5px 5px 5px;
+      border-left-color: transparent !important;
+      border-right-color: transparent !important;
+      border-top-color: transparent !important;
+      top: -5px;
+      left: calc(50% - 5px);
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
 
-$pretty--class-name: pretty;
+  &[x-placement^="right"] {
+    margin-left: 5px;
 
-// are you sure, you wanna change my handpicked
-// awesome super duper colors?
+    .tooltip-arrow {
+      border-width: 5px 5px 5px 0;
+      border-left-color: transparent !important;
+      border-top-color: transparent !important;
+      border-bottom-color: transparent !important;
+      left: -5px;
+      top: calc(50% - 5px);
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
 
-$pretty--color-default:#bdc3c7;
-$pretty--color-primary:#428bca;
-$pretty--color-info:#5bc0de;
-$pretty--color-success:#5cb85c;
-$pretty--color-warning:#f0ad4e;
-$pretty--color-danger:#d9534f;
-$pretty--color-dark:#5a656b;
+  &[x-placement^="left"] {
+    margin-right: 5px;
 
-// uh, boring z-index stuff, who cares.
+    .tooltip-arrow {
+      border-width: 5px 0 5px 5px;
+      border-top-color: transparent !important;
+      border-right-color: transparent !important;
+      border-bottom-color: transparent !important;
+      right: -5px;
+      top: calc(50% - 5px);
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
 
-$pretty--z-index-back:0;
-$pretty--z-index-between:1;
-$pretty--z-index-front:2;
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .15s, visibility .15s;
+  }
 
-// nobody will change this.
-
-$pretty--debug:false;
-$pretty--dev-err:'Invalid input type!';
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .15s;
+  }
+}

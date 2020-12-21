@@ -27,6 +27,8 @@
     },
     "dependencies": {
         "pretty-checkbox-vue": "^1.1.9",
+        "v-title": "^1.0.13",
+        "v-tooltip": "^2.0.3",
         "vue-loading-overlay": "^3.4.2",
         "vue-material-design-icons": "^4.11.0",
         "vuetify": "^2.3.21"
