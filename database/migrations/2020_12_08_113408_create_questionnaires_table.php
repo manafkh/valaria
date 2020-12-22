@@ -21,8 +21,6 @@ class CreateQuestionnairesTable extends Migration
             $table->string('project_name');
             $table->text('project_description');
             $table->string('project_address');
-            $table->text('files')->nullable();
-            $table->text('links')->nullable();
             $table->string('budget_range')->nullable();
             $table->timestamps();
 

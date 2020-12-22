@@ -64,18 +64,15 @@ class QuestionnaireController extends Controller
 
         if ($files =$request->file('files')){
             foreach ($files as $file){
-                $fileName = time().'.'.$file->getClientOriginalExtension();
-                $path = $file->move('upload', $fileName);
+                $fileName = $file->getClientOriginalName();
+                $file->move('upload', $fileName);
                 $questionnaire->files()->create([
-                    'file'=>$path
+                    'file'=>$fileName
                 ]);
             }
 
         }
-
-
         return response()->json(['success'=>'upload form successfully !!']);
-
     }
 
     /**
@@ -84,9 +81,14 @@ class QuestionnaireController extends Controller
      * @param  \App\Models\Questionnaire  $questionnaire
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        return view('admin.questionnaires.show2');
+        $user =Auth::user();
+        $questionnaire = Questionnaire::with('files')->find($id);
+        $questionnaires = Questionnaire::where('user_id',$user->id)->get();
+
+
+        return view('users.Questionnaires.show',compact(['questionnaire','questionnaires','user']));
     }
 
     /**

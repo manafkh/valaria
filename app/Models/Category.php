@@ -29,4 +29,8 @@ class Category extends Model
     public function categoryDetails(){
         return $this->belongsTo(CategoryDetails::class);
     }
+
+    public function questionnaires(){
+        return $this->hasMany(Questionnaire::class);
+    }
 }

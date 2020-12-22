@@ -17,4 +17,7 @@ class Questionnaire extends Model
     public function references(){
         return $this->hasMany(Reference::class);
     }
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }

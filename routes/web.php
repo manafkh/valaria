@@ -25,12 +25,12 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class,'index'])->nam
 Route::resource('users', UserController::class);
 Route::resource('questionnaires', QuestionnaireController::class);
 Route::resource('profiles',\App\Http\Controllers\ProfileController::class);
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 //TODO home page user
-Route::get('/home', function () {
+Route::get('/', function () {
     return view('users.home');
 })->name('users.home');
 

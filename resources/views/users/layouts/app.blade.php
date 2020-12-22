@@ -55,23 +55,37 @@
   <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo mr-auto"><a href="../index.html">Alshriq</a></h1>
+      <h2 class="logo mr-auto"><a href="{{route('users.home')}}">Al-sharq</a></h2>
       <!-- Uncomment below if you prefer to use an images logo -->
       <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
+          @guest
+              @if (Route::has('login'))
+                <li>
+                  <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                </li>
+              @endif
+              @if (Route::has('register'))
+                <li class="nav-item">
+                  <a href="{{ route('register') }}">{{ __('Register') }}</a>
+                </li>
+              @endif
+          @else
           <li><a href="{{route('users.home')}}">Home</a></li>
-          <li><a href="#about">About</a></li>
           <li><a href="{{route('profiles.index')}}">Profile</a></li>
           <li><a href="{{route('questionnaires.index')}}">Questionnaire</a></li>
-          <li><a href="{{ route('logout') }}"
-                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-              {{ __('Logout') }}
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-              @csrf
-            </form></li>
+            <li>
+                <a href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                  {{ __('Logout') }}
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+                </form>
+            </li>
+          @endguest
 
         </ul>
       </nav><!-- .nav-menu -->
@@ -79,17 +93,42 @@
     </div>
   </header><!-- End Header -->
 
-  <main id="main">
+  <div id="main">
   @yield('content')
     <!-- ======= Breadcrumbs ======= -->
     <!-- End Breadcrumbs -->
 
 
 
-  </main><!-- End #main -->
+  </div><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
+      <div class="footer-top">
+          <div class="container">
+              <div class="row">
+
+                  <div class="col-lg-4 col-md-6">
+                      <div class="footer-info">
+                          <h3>Shar Al-Sharq</h3>
+                          <p>
+                              A108 Adam Street <br>
+                              NY 535022, USA<br><br>
+                              <strong>Phone:</strong> +1 5589 55488 55<br>
+                              <strong>Email:</strong> info@example.com<br>
+                          </p>
+                          <div class="social-links mt-3">
+                              <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                              <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                              <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                              <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                              <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
 
     <div class="container">
       <div class="copyright">
