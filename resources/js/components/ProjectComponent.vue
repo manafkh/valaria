@@ -13,7 +13,7 @@
                                  :opacity="1"
                         ></Loading>
                         <br>
-                        <div class="row">
+                        <div class="row align-content-center">
                             <div class="col-lg-4 col-md-4 col-sm-6" v-for="(child,childname) in childs">
                                 <div @click.prevent="next(child.id)" v-tooltip="child.category_details ? child.category_details.description : 'no description'" class="card" style="width: 16rem; cursor:pointer;">
                                     <img class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
@@ -88,8 +88,8 @@
                                      :opacity="1"
                             ></Loading>
                             <br>
-                            <div class="row">
-                                <div  class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6" v-for="child in childs" >
+                            <div class="row align-content-center">
+                                <div  class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12" v-for="child in childs" >
                                     <div v-on:click="getstyle(child.id)"  @click.prevent="next(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'"  v-model="project.category_id = child.id" style="width: 16rem; cursor:pointer;">
                                         <img v-if="child.image_icon != null" class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
                                         <img v-else-if="child.image != null" class="card-img-top" style="width: 16rem; height: 14rem; border-radius: 12px; padding: 5px;" v-bind:src="mouseOverCheck === child.id ? child.image : child.image_opacity" v-on:mouseover="mouseOverCheck = child.id"  v-on:mouseout="mouseOverCheck = ''"/>
@@ -153,15 +153,15 @@
                             <div class="row form-group">
                                 <div class="col-lg-4 col-sm-12 form-group">
                                     <label>reference</label>
-                                    <input class="form-control" type="url" v-model="project.references.link1" placeholder="www.example.com">
+                                    <input class="form-control" type="text" v-model="project.references.link1" placeholder="www.example.com">
                                 </div>
                                 <div class="col-lg-4 col-sm-12">
                                     <label>reference</label>
-                                    <input class="form-control" type="url" v-model="project.references.link2" placeholder="www.example.com">
+                                    <input class="form-control" type="text" v-model="project.references.link2" placeholder="www.example.com">
                                 </div>
                                 <div class="col-lg-4 col-sm-12">
                                     <label>reference</label>
-                                    <input class="form-control" type="url" v-model="project.references.link3" placeholder="www.example.com">
+                                    <input class="form-control" type="text" v-model="project.references.link3" placeholder="www.example.com">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -170,9 +170,11 @@
 
                                 </textarea>
                             </div>
+                            <div class="row">
+                                <button @click.prevent="prev()" class="btn pull-left">previous</button>
+                                <button  class="btn pull-right " >Confirm</button>
+                            </div>
 
-                            <button @click.prevent="prev()" class="btn pull-left">previous</button>
-                            <button class="btn pull-right" style="margin-left: 940px;" >Confirm</button>
 
                         </div>
                     </fieldset>
@@ -286,9 +288,9 @@
                     });
                     this.isLoading = true;
                     setTimeout(() => {
-                        this.step++;
+                        this.step = 5;
                         this.isLoading = false;
-                    },2000);
+                    },4000);
                 }
 
                 this.errors = [];
@@ -325,7 +327,7 @@
                 })
             },
             sum(){
-                this.project.budget = this.budgets.budget_from + ' - '+ this.budgets.budget_to ;
+                this.project.budget = this.budgets.budget_from + '-'+ this.budgets.budget_to +'$' ;
             },
             onCancel() {
                 console.log('User cancelled the loader.')
@@ -367,8 +369,5 @@ button:hover{
     color: #c6c8ca;
     box-shadow: 5px 5px 5px dimgrey;
 }
-.col{
-    max-height: 50%;
-    max-width: 50%;
-}
+
 </style>

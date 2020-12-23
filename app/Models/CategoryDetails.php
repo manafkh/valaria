@@ -9,7 +9,6 @@ class CategoryDetails extends Model
 {
     use HasFactory;
     protected $fillable =[
-        'category_id',
         'name',
         'description',
         'hasStyles'

@@ -1,12 +1,16 @@
 @extends('users.layouts.app')
+<style>
+    button{
 
+    }
+</style>
 @section('content')
-    <section id="breadcrumbs" class="breadcrumbs">
+    <section id="breadcrumbs" class="breadcrumbs" >
         <div class="container">
-            <div class="row justify-content-center">
+            <div class="row justify-content-center" style="font-family: 'Open Sans Semibold'">
                 <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">{{ __('Login') }}</div>
+                    <div class="card" style="box-shadow: -40px 13px 8px 7px currentColor;">
+                        <div class="card-header"><h3 class="text-center">{{ __('Login') }}</h3></div>
 
                         <div class="card-body">
                             <form method="POST" action="{{ route('login') }}">
@@ -59,7 +63,7 @@
                                         </button>
 
                                         @if (Route::has('password.request'))
-                                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                                            <a class="btn" style="background:#0c0c0c; color: #e9e9e9;" href="{{ route('password.request') }}">
                                                 {{ __('Forgot Your Password?') }}
                                             </a>
                                         @endif
