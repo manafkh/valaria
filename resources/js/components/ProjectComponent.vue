@@ -170,7 +170,7 @@
 
                                 </textarea>
                             </div>
-                            <div class="row">
+                            <div class="form-group">
                                 <button @click.prevent="prev()" class="btn pull-left">previous</button>
                                 <button  class="btn pull-right " >Confirm</button>
                             </div>
