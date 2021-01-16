@@ -17,6 +17,9 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->unsignedInteger('project_id')->nullable();
             $table->unsignedInteger('questionnaire_id')->nullable();
+            $table->unsignedInteger('designer_id')->nullable();
+            $table->unsignedInteger('team_id')->nullable();
+            $table->unsignedInteger('three_d_model_id')->nullable();
             $table->string('file')->nullable();
 
             $table->timestamps();

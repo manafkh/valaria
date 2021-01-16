@@ -20,21 +20,38 @@
                         <li><a href="{{route('users.index')}}">Show Users</a></li>
                     </ul>
                 </li>
-                <li><a href="#questionnairesdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-padnote"></i>Questionnaires </a>
+                <li><a href="#questionnairesdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-padnote"></i>{{__('Questionnaires ')}}</a>
                     <ul id="questionnairesdropdownDropdown" class="collapse list-unstyled ">
                         <li><a href="#">Show Questionnaires</a></li>
                     </ul>
                 </li>
-                <li><a href="#projectsdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-website"></i>Projects </a>
+                <li><a href="#projectsdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-website"></i>{{__('Projects')}}</a>
                     <ul id="projectsdropdownDropdown" class="collapse list-unstyled ">
                         <li><a href="#">Create Project</a></li>
                         <li><a href="#">Show Projects</a></li>
                     </ul>
                 </li>
-                <li><a href="#settingsdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-bars"></i>Settings </a>
-                    <ul id="settingsdropdownDropdown" class="collapse list-unstyled ">
-                        <li><a href="#">Create Project</a></li>
-                        <li><a href="#">Show Projects</a></li>
+                <li><a href="#contactsdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-address-book"></i>{{__('Contact')}}</a>
+                    <ul id="contactsdropdownDropdown" class="collapse list-unstyled ">
+                        <li><a href="{{route('contacts.index')}}">Show</a></li>
+
+                    </ul>
+                </li>
+                <li><a href="#teamsdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-users"></i>{{__('Team')}}</a>
+                    <ul id="teamsdropdownDropdown" class="collapse list-unstyled ">
+                        <li><a href="{{route('teams.index')}}">Show Team</a></li>
+                    </ul>
+                </li>
+                <li><a href="#designersdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-align-center"></i>{{__('Designers')}}</a>
+                    <ul id="designersdropdownDropdown" class="collapse list-unstyled ">
+                        <li><a href="{{route('designers.create')}}">Add Designer</a></li>
+                        <li><a href="{{route('designers.index')}}">Show Designers</a></li>
+                    </ul>
+                </li>
+                <li><a href="#modelsdropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-picture-o"></i>{{__('3D Models')}}</a>
+                    <ul id="modelsdropdownDropdown" class="collapse list-unstyled ">
+                        <li><a href="{{route('model.create')}}">Add Designer</a></li>
+                        <li><a href="{{route('model.index')}}">Show Designers</a></li>
                     </ul>
                 </li>
                             </ul>

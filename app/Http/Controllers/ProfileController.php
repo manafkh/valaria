@@ -18,8 +18,8 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $questionnaires = Questionnaire::where('user_id',$user->id)->get();
-        return view('users.Profiles.index',compact(['user','questionnaires']));
+//        $questionnaires = Questionnaire::where('user_id',$user->id)->get();
+        return view('users.Profiles.index',compact(['user']));
     }
 
     /**

@@ -36,31 +36,15 @@ class QuestionnaireController extends Controller
      */
     public function store(Request $request)
     {
-      $questionnaire = Questionnaire::create([
 
+      $questionnaire = Questionnaire::create([
             'category_id'=> $request->category_id,
-            'user_id'=>Auth::user()->id,
             'style_id'=> $request->style_id,
-            'project_name'=> $request->name,
-            'project_description'=> $request->description,
-            'project_address'=> "no address",
-            'budget_range'=> $request->budget
+            'phone'=> $request->phone,
+            'project_address'=> $request->address,
+            'email'=> $request->email,
+          'project_description'=> $request->description,
         ]);
-        if ($request->link1 != null){
-            $questionnaire->references()->create([
-                'link'=>$request->link1
-            ]);
-        }
-        if ($request->link2 !=null){
-            $questionnaire->references()->create([
-                'link'=>$request->link2
-            ]);
-        }
-        if ($request->link3 !=null){
-            $questionnaire->references()->create([
-                'link'=>$request->link3
-            ]);
-        }
 
         if ($files =$request->file('files')){
             foreach ($files as $file){

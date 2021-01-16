@@ -5,7 +5,7 @@
 
                     <div v-if="step === 0" >
                         <Loading :active.sync="isLoading"
-                                 :can-cancel="true"
+                                 :can-cancel="false"
                                  :loader="loader"
                                  :on-cancel="onCancel"
                                  :width="110"
@@ -15,10 +15,10 @@
                         <br>
                         <div class="row align-content-center">
                             <div class="col-lg-4 col-md-4 col-sm-6" v-for="(child,childname) in childs">
-                                <div @click.prevent="next(child.id)" v-tooltip="child.category_details ? child.category_details.description : 'no description'" class="card" style="width: 16rem; cursor:pointer;">
+                                <div @click.prevent="next(child.id)" v-tooltip="child.category_details ? child.category_details.description : 'no Description'" class="card" style="width: 16rem; cursor:pointer;">
                                     <img class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
                                     <div class="card-body">
-                                        <p class="card-title text-center"><strong>{{child.name}}</strong></p>
+                                        <p class="card-title text-center"><strong>{{titleCase(child.name)}}</strong></p>
                                     </div>
                                 </div>
                             </div>
@@ -27,7 +27,7 @@
                     <fieldset v-if="step === 1">
                         <div class="vld-parent panel-body">
                             <Loading :active.sync="isLoading"
-                                     :can-cancel="true"
+                                     :can-cancel="false"
                                      :loader="loader"
                                      :on-cancel="onCancel"
                                      :width="110"
@@ -37,23 +37,125 @@
                             <br>
                             <div class="row">
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12" v-for="child in childs">
-                                    <div @click.prevent="next(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'" v-model="project.category_id = child.id" style="width: 16rem; cursor:pointer;">
+                                    <div @click.prevent="getchilds(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'"  style="width: 16rem; cursor:pointer;">
                                         <img v-if="child.image_icon != null" class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
                                         <img v-else-if="child.image != null" class="card-img-top" style="width: 16rem; height: 14rem;  border-radius: 12px; padding: 5px;" v-bind:src="mouseOverCheck === child.id ? child.image : child.image_opacity" v-on:mouseover="mouseOverCheck = child.id"  v-on:mouseout="mouseOverCheck = ''"/>
                                         <div v-if="child.image === null" class="card-body">
-                                            <h5 class="card-title text-center">{{child.name}}</h5>
+                                            <h5 class="card-title text-center">{{titleCase(child.name)}}</h5>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <button @click.prevent="prev()" class="btn">previous</button>
                         </div>
+                        <div class="col-md-6 offset-md-3">
+                            <div>
+
+                                <b-modal ref="my-modal"  center-header title="Information" hide-footer>
+                                    <div>
+                                        <div v-if="errors.length" class="alert alert-dark" role="alert">
+                                            <b>Please correct the following error(s):</b>
+                                            <ul>
+                                                <li v-for="error in errors">{{ error }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <b-form-group
+                                                        id="input-group-1"
+                                                        label="Email address:"
+                                                        label-for="input-1"
+                                                        description="We'll never share your email with anyone else."
+                                                >
+                                                    <b-form-input
+                                                            id="input-1"
+                                                            v-model="project.email"
+                                                            type="email"
+                                                            placeholder="Enter email"
+                                                            required
+                                                    ></b-form-input>
+                                                </b-form-group>
+                                            </div>
+                                            <div class="col">
+                                                <b-form-group
+                                                        id="input-group-2"
+                                                        label=" Phone:"
+                                                        label-for="input-2"
+                                                        description="We'll never share your Phone with anyone else."
+                                                >
+                                                    <b-form-input
+                                                            id="input-2"
+                                                            v-model="project.phone"
+                                                            type="phone"
+                                                            placeholder="Enter Phone number"
+                                                            required
+                                                    ></b-form-input>
+                                                </b-form-group>
+                                            </div>
+                                        </div>
+
+                                        <b-form-group
+                                                id="input-group-3"
+                                                label="Address:"
+                                                label-for="input-3"
+
+                                        >
+
+                                            <b-form-input
+                                                    id="input-3"
+                                                    v-model="project.address"
+                                                    type="text"
+                                                    placeholder="Enter address"
+                                                    required
+                                            ></b-form-input>
+                                        </b-form-group>
+                                        <div v-if="styles.length !== 0">
+                                            <b-form-group  id="input-group-4" label="Style :" label-for="input-4">
+                                                <b-form-select
+                                                        id="input-4"
+                                                        v-model="project.style_id"
+                                                        :options="styles"
+                                                        value-field="id"
+                                                        text-field="name"
+                                                        required
+                                                ></b-form-select>
+                                            </b-form-group>
+                                        </div>
+                                        <b-form-group id="input-group-5" label="File" label-for="input-5">
+                                            <b-form-file
+                                                    id="input-5"
+                                                    v-model="file"
+                                                    :state="Boolean(file)"
+                                                    ref="file"
+                                                    multiple="multiple"
+                                                    placeholder="Choose a file or drop it here..."
+                                                    drop-placeholder="Drop file here..."
+                                            ></b-form-file>
+                                        </b-form-group>
+
+                                        <b-form-group id="input-group-6" label="Description" label-for="input-6">
+                                            <b-form-textarea
+                                                    id="input-6"
+                                                    v-model="project.description"
+                                                    placeholder="Enter something..."
+                                                    rows="2"
+                                                    max-rows="6"
+                                            ></b-form-textarea>
+                                        </b-form-group>
+                                        <div class="text-center">
+                                            <b-button type="submit" @click="submit" pill align-v="text-center">Confirm</b-button>
+                                        </div>
+
+                                    </div>
+                                </b-modal>
+                            </div>
+                        </div>
                     </fieldset>
                     <fieldset v-if="step === 2 && this.childs.length !== 0">
 
                         <div class="vld-parent panel-body">
                             <Loading :active.sync="isLoading"
-                                     :can-cancel="true"
+                                     :can-cancel="false"
                                      :loader="loader"
                                      :on-cancel="onCancel"
                                      :width="110"
@@ -63,11 +165,11 @@
                             <br>
                             <div class="row">
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 " v-for="child in childs">
-                                    <div v-on:click="getstyle(child.id)" @click.prevent="next(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'" v-model="project.category_id = child.id" style="width: 16rem; cursor:pointer;">
+                                    <div v-on:click="getstyle(child.id)" @click.prevent="getchilds(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'" style="width: 16rem; cursor:pointer;">
                                         <img v-if="child.image_icon != null" class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
                                         <img v-else-if="child.image != null" class="card-img-top" style="width: 16rem; height: 14rem; border-radius: 12px; padding: 5px;" v-bind:src="mouseOverCheck === child.id ? child.image : child.image_opacity" v-on:mouseover="mouseOverCheck = child.id"  v-on:mouseout="mouseOverCheck = ''"/>
                                         <div v-if="child.image === null" class="card-body">
-                                            <h6 class="card-text text-center">{{child.name}}</h6>
+                                            <h6 class="card-text text-center">{{titleCase(child.name)}}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -75,12 +177,111 @@
                             <button @click.prevent="prev()" class="btn">previous</button>
 
                         </div>
+                        <div class="col-md-6 offset-md-3">
+                            <div>
+
+                                <b-modal ref="my-modal"  title="Information" hide-footer>
+                                    <div>
+                                        <div v-if="errors.length" class="alert alert-dark" role="alert">
+                                            <b>Please correct the following error(s):</b>
+                                            <ul>
+                                                <li v-for="error in errors">{{ error }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <b-form-group
+                                                        id="input-group-1"
+                                                        label="Email address:"
+                                                        label-for="input-1"
+                                                        description="We'll never share your email with anyone else."
+                                                >
+                                                    <b-form-input
+                                                            id="input-1"
+                                                            v-model="project.email"
+                                                            type="email"
+                                                            placeholder="Enter email"
+                                                            required
+                                                    ></b-form-input>
+                                                </b-form-group>
+                                            </div>
+                                            <div class="col">
+                                                <b-form-group
+                                                        id="input-group-2"
+                                                        label=" Phone:"
+                                                        label-for="input-2"
+                                                        description="We'll never share your Phone with anyone else."
+                                                >
+                                                    <b-form-input
+                                                            id="input-2"
+                                                            v-model="project.phone"
+                                                            type="phone"
+                                                            placeholder="Enter Phone number"
+                                                            required
+                                                    ></b-form-input>
+                                                </b-form-group>
+                                            </div>
+                                        </div>
+
+                                        <b-form-group
+                                                id="input-group-3"
+                                                label="Address:"
+                                                label-for="input-3"
+
+                                        >
+
+                                            <b-form-input
+                                                    id="input-3"
+                                                    v-model="project.address"
+                                                    type="text"
+                                                    placeholder="Enter address"
+                                                    required
+                                            ></b-form-input>
+                                        </b-form-group>
+
+                                        <b-form-group v-if="styles.length" id="input-group-4" label="Style :" label-for="input-4">
+                                            <b-form-select
+                                                    id="input-4"
+                                                    v-model="project.style_id"
+                                                    :options="styles"
+                                                    value-field="id"
+                                                    text-field="name"
+                                                    required
+                                            ></b-form-select>
+                                        </b-form-group>
+                                        <b-form-group id="input-group-5" label="File" label-for="input-5">
+                                            <b-form-file
+                                                    id="input-5"
+                                                    v-model="file"
+                                                    :state="Boolean(file)"
+                                                    ref="file"
+                                                    multiple="multiple"
+                                                    placeholder="Choose a file or drop it here..."
+                                                    drop-placeholder="Drop file here..."
+                                            ></b-form-file>
+                                        </b-form-group>
+                                        <b-form-group id="input-group-6" label="Description" label-for="input-6">
+                                            <b-form-textarea
+                                                    id="input-6"
+                                                    v-model="project.description"
+                                                    placeholder="Enter something..."
+                                                    rows="2"
+                                                    max-rows="6"
+                                            ></b-form-textarea>
+                                        </b-form-group>
+
+                                        <b-button type="submit" @click="submit" pill class="text-center">Confirm</b-button>
+
+                                    </div>
+                                </b-modal>
+                            </div>
+                        </div>
                     </fieldset>
                     <fieldset v-else-if="step === 3 && this.childs.length !== 0">
                         <div class="vld-parent panel-body">
 
                             <Loading :active.sync="isLoading"
-                                     :can-cancel="true"
+                                     :can-cancel="false"
                                      :loader="loader"
                                      :on-cancel="onCancel"
                                      :width="110"
@@ -90,11 +291,11 @@
                             <br>
                             <div class="row align-content-center">
                                 <div  class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12" v-for="child in childs" >
-                                    <div v-on:click="getstyle(child.id)"  @click.prevent="next(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'"  v-model="project.category_id = child.id" style="width: 16rem; cursor:pointer;">
-                                        <img v-if="child.image_icon != null" class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
+                                    <div  v-on:click="getstyle(child.id)" @click.prevent="getchilds(child.id)" class="card" v-tooltip="child.category_details ? child.category_details.description : 'no Description'"  style="width: 16rem; cursor:pointer;">
+                                        <img v-if="child.image_icon != null"  class="card-img-top card-image" :src="child.image_icon"  alt="Card image cap">
                                         <img v-else-if="child.image != null" class="card-img-top" style="width: 16rem; height: 14rem; border-radius: 12px; padding: 5px;" v-bind:src="mouseOverCheck === child.id ? child.image : child.image_opacity" v-on:mouseover="mouseOverCheck = child.id"  v-on:mouseout="mouseOverCheck = ''"/>
                                         <div v-if="child.image === null" class="card-body">
-                                            <h6 class="card-text text-center">{{child.name}}</h6>
+                                            <h6 class="card-text text-center">{{titleCase(child.name)}}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -102,92 +303,124 @@
                             <button @click.prevent="prev()" class="btn">previous</button>
 
                         </div>
-                    </fieldset>
-                    <fieldset v-else-if="step === 3 && this.childs.length === 0 || step === 4 || step === 2 && this.childs.length === 0"  style="box-shadow:dimgrey -1px 5px 5px 7px;">
-                        <div class="panel-body" >
-                            <Loading :active.sync="isLoading"
-                                     :can-cancel="true"
-                                     :loader="loader"
-                                     :on-cancel="onCancel"
-                                     :width="110"
-                                     :height="110"
-                                     :opacity="1"
-                            ></Loading>
-                            <h3 class="text-center">Answer the questionnaire</h3>
-                            <div v-if="errors.length" class="alert alert-dark" role="alert">
-                                <b>Please correct the following error(s):</b>
-                                <ul>
-                                    <li v-for="error in errors">{{ error }}</li>
-                                </ul>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-lg-6 co-sm-12 form-group">
-                                    <label>Project Name</label>
-                                    <input class="form-control" type="text" v-model="project.name" placeholder="flat build">
-                                </div>
-                                <div v-if="styles.length !== 0" class="col-lg-6 co-sm-12 form-group" >
-                                    <label for="budgets">select Style</label>
-                                    <select id="budgets" class="form-control" v-model="project.style_id">
-                                        <option v-for="style in styles" v-bind:value="style.id">
-                                            {{ style.name }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-lg-6 co-sm-12 form-group">
-                                    <label>Upload File Design</label>
-                                    <input class="form-control" type="file" ref="file" multiple="multiple" >
-                                </div>
-                                <div class="col-lg-3 co-sm-6 form-group">
-                                    <label>Budget</label>
-                                    <input class="form-control" type="number" v-model="budgets.budget_from" placeholder="1000">
-                                </div>
-                                <div class="col-lg-3 co-sm-6 form-group">
-                                    <label>To:</label>
-                                    <input class="form-control" type="number" v-model="budgets.budget_to" placeholder="2000" v-on:change="sum">
-                                </div>
+                        <div class="col-md-6 offset-md-3">
+                            <div>
 
-                            </div>
+                                <b-modal ref="my-modal"  title-center="Information" hide-footer>
+                                    <div v-if="!success">
+                                        <div v-if="errors.length" class="alert alert-dark" role="alert">
+                                            <b>Please correct the following error(s):</b>
+                                            <ul>
+                                                <li v-for="error in errors">{{ error }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <b-form-group
+                                                        id="input-group-1"
+                                                        label="Email address:"
+                                                        label-for="input-1"
+                                                        description="We'll never share your email with anyone else."
+                                                >
+                                                    <b-form-input
+                                                            id="input-1"
+                                                            v-model="project.email"
+                                                            type="email"
+                                                            placeholder="Enter email"
+                                                            required
+                                                    ></b-form-input>
+                                                </b-form-group>
+                                            </div>
+                                            <div class="col">
+                                                <b-form-group
+                                                        id="input-group-2"
+                                                        label=" Phone:"
+                                                        label-for="input-2"
+                                                        description="We'll never share your Phone with anyone else."
+                                                >
+                                                    <b-form-input
+                                                            id="input-2"
+                                                            v-model="project.phone"
+                                                            type="phone"
+                                                            placeholder="Enter Phone number"
+                                                            required
+                                                    ></b-form-input>
+                                                </b-form-group>
+                                            </div>
+                                        </div>
 
-                            <div class="row form-group">
-                                <div class="col-lg-4 col-sm-12 form-group">
-                                    <label>reference</label>
-                                    <input class="form-control" type="text" v-model="project.references.link1" placeholder="www.example.com">
-                                </div>
-                                <div class="col-lg-4 col-sm-12">
-                                    <label>reference</label>
-                                    <input class="form-control" type="text" v-model="project.references.link2" placeholder="www.example.com">
-                                </div>
-                                <div class="col-lg-4 col-sm-12">
-                                    <label>reference</label>
-                                    <input class="form-control" type="text" v-model="project.references.link3" placeholder="www.example.com">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="anext">Description</label>
-                                <textarea v-model="project.description" class="form-control" name="next" id="anext" cols="50" rows="5">
+                                        <b-form-group
+                                                    id="input-group-3"
+                                                    label="Address:"
+                                                    label-for="input-3"
 
-                                </textarea>
-                            </div>
-                            <div class="form-group">
-                                <button @click.prevent="prev()" class="btn pull-left">previous</button>
-                                <button  class="btn pull-right " >Confirm</button>
-                            </div>
+                                            >
+
+                                            <b-form-input
+                                                    id="input-3"
+                                                    v-model="project.address"
+                                                    type="text"
+                                                    placeholder="Enter address"
+                                                    required
+                                            ></b-form-input>
+                                        </b-form-group>
+
+                                        <b-form-group v-if="styles.length" id="input-group-4" label="Style :" label-for="input-4">
+                                            <b-form-select
+                                                    id="input-4"
+                                                    v-model="project.style_id"
+                                                    :options="styles"
+                                                    value-field="id"
+                                                    text-field="name"
+                                                    required
+                                            ></b-form-select>
+
+                                        </b-form-group>
+
+                                        <b-form-group id="input-group-5" label="File" label-for="input-5">
+                                            <b-form-file
+                                                    id="input-5"
+                                                    v-model="file"
+                                                    :state="Boolean(file)"
+                                                    ref="file"
+                                                    multiple="multiple"
+                                                    placeholder="Choose a file or drop it here..."
+                                                    drop-placeholder="Drop file here..."
+                                            ></b-form-file>
+                                        </b-form-group>
+                                        <b-form-group id="input-group-6" label="Description" label-for="input-6">
+                                            <b-form-textarea
+                                                    id="input-6"
+                                                    v-model="project.description"
+                                                    placeholder="Enter something..."
+                                                    rows="2"
+                                                    max-rows="6"
+                                            ></b-form-textarea>
+                                        </b-form-group>
 
 
+                                        <b-button  type="submit" @click="submit" pill class="text-center">Confirm</b-button>
+
+                                    </div>
+                                    <div v-if="success">
+                                        <div class="card-body pt-0">
+                                            <h4 class="heading mb-4 pb-1 text-center">Confirmation</h4>
+                                            <p class="text-center">Form has been submitted Successfully ! <br>You will recieve estimation on your email id
+                                                and contact no.</p>
+                                        </div>
+                                    </div>
+                                </b-modal>
+                            </div>
                         </div>
                     </fieldset>
                 </form>
-                <div v-if="step === 5">
-                    <div class="card-body pt-0">
-                        <h4 class="heading mb-4 pb-1 text-center">Confirmation</h4>
-                        <p class="text-center">Form has been submitted Successfully ! <br>You will recieve estimation on your email id
-                            and contact no.</p>
-                        <div class="row justify-content-center"> <img src="assets\img\form.gif" style="  max-width: 75%;box-shadow: 5px 5px 5px dimgrey;" class="check">
-                        </div>
-                    </div>
-                </div>
+                <!--<div>-->
+                    <!--<div class="card-body pt-0">-->
+                        <!--<h4 class="heading mb-4 pb-1 text-center">Confirmation</h4>-->
+                        <!--<p class="text-center">Form has been submitted Successfully ! <br>You will recieve estimation on your email id-->
+                            <!--and contact no.</p>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
 
 
@@ -197,9 +430,13 @@
 
     import Loading from 'vue-loading-overlay';
     import 'vue-loading-overlay/dist/vue-loading.css';
+    import { ModalPlugin } from 'bootstrap-vue'
+    import { FormPlugin } from 'bootstrap-vue'
+
     export default {
         data() {
             return {
+                success:false,
                 file:[],
                 successes:[],
                 styles:[],
@@ -213,22 +450,18 @@
                 project:{
                   style_id:'' ,
                   category_id:'',
-                  name:'',
-                  budget:'',
-                  description:'',
-                    references:{
-                        link1:'',
-                        link2:'',
-                        link3:''
-                    },
+                  email:'',
+                  phone:'',
+                  address:'',
+                  description:''
                 },
                 mouseOverCheck: '',
                 childs:[],
                 child:[],
-
                 isLoading: false,
                 fullPage: true,
                 loader:"dots",
+                show:false
 
 
             }
@@ -245,23 +478,25 @@
                     this.steps.pop();
                     this.step--;
                     this.isLoading = false;
-                },4000)
+                },1000)
             },
             next(parent) {
-                this.isLoading = true;
-                axios.get('category/'+ parent).then(response=>{this.childs = response.data;});
-                setTimeout(() => {
 
-                    this.step++;
-                    this.steps.push(parent);
-                    this.isLoading = false;
-                },4000);
-               
+                axios.get('category/'+ parent).then(response=>{this.childs = response.data;
+
+                });
+                if (this.childs.length !== 0) {
+                    this.isLoading = true;
+                    setTimeout(() => {
+                        this.project.category_id = parent;
+                        this.step++;
+                        this.steps.push(parent);
+                        this.isLoading = false;
+                    },1000);
+                }
             },
             submit(e) {
-
-
-
+                console.log(this.project);
                 let formData = new FormData();
                 for( var i = 0; i < this.$refs.file.files.length; i++ ){
                     let file = this.$refs.file.files[i];
@@ -269,61 +504,49 @@
                 }
                 formData.append('category_id', this.project.category_id);
                 formData.append('style_id', this.project.style_id);
-                formData.append('description', this.project.description);
-                formData.append('link1', this.project.references.link1);
-                formData.append('link2', this.project.references.link2);
-                formData.append('link3', this.project.references.link3);
-                formData.append('name', this.project.name);
-                formData.append('budget', this.project.budget);
-
+                formData.append('phone', this.project.phone);
+                formData.append('email', this.project.email);
+                formData.append('address',this.project.address);
+                formData.append('description',this.project.description);
                 const config = {
                     headers: { 'content-type': 'multipart/form-data' }
                 };
 
-                if ((this.budgets.budget_to - this.budgets.budget_from) >= 0 && this.project.name && this.project.description ) {
+                if (this.project.email && this.project.phone) {
                     axios.post('createproject',formData,config).then(res =>{
-                                console.log(res.data);
+                        // this.isLoading = true;
+                        // setTimeout(() => {
+                        //     this.step = 4;
+                        //     this.isLoading = false;
+                        // },1000);
+                        this.success = true;
+
                     }).catch(err=>{
                        this.errors.push(err);
                     });
-                    this.isLoading = true;
-                    setTimeout(() => {
-                        this.step = 5;
-                        this.isLoading = false;
-                    },4000);
+
                 }
 
                 this.errors = [];
-
-                if ((this.budgets.budget_to - this.budgets.budget_from) < 0) {
-                    this.errors.push('Budget not correct.');
+                if (!this.project.email) {
+                    this.errors.push('Email Address required.');
                 }
-                if (!this.project.name) {
-                    this.errors.push('Name required.');
+                if (!this.project.phone) {
+                    this.errors.push('Phone Number required.');
                 }
-                if (!this.project.description) {
-                    this.errors.push('Description required.');
-                }
-
                 e.preventDefault();
 
             },
             getchild(){
                 axios.get('category').then(response=>{
                     this.childs = response.data;
-                    console.log("hi")
-                })
-            },
-            getchilds(parent){
-                axios.get('category/'+ parent).then(response=>{
-                    this.childs = response.data;
-                    console.log("hi")
+
                 })
             },
             getstyle(style_id){
                 axios.get('styles/'+ style_id).then(res=>{
                     this.styles = res.data;
-                    console.log(this.styles);
+
                 })
             },
             sum(){
@@ -332,10 +555,38 @@
             onCancel() {
                 console.log('User cancelled the loader.')
             },
+            showModal(child) {
+                this.project.category_id = child;
+                this.$refs['my-modal'].show()
+            },
+            getchilds(parent){
+                let child = [];
+                console.log(parent);
+                axios.get('category/'+ parent).then(response=>{
+                    child = response.data;
+                    if (child.length !== 0){
+
+                        this.next(parent)
+                    } else {
+                        this.showModal(parent)
+                    }
+                });
+
+
+            },
+            titleCase(str) {
+                 var splitStr = str.toLowerCase().split(' ');
+                 for (var i = 0; i < splitStr.length; i++) {
+                  splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+                  }
+             return splitStr.join(' ');
+           }
 
         },
         components: {
-            Loading
+            Loading,
+            FormPlugin,
+            ModalPlugin
         },
     }
 </script>
@@ -343,7 +594,7 @@
 <style scoped>
 
 .font-form{
-    font-family: "Open Sans Semibold";
+    font-family: HelveticaNowDisplay, sans-serif;
 }
 
 .card-image{

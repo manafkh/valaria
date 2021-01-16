@@ -16,6 +16,28 @@ class ImagesSeeder extends Seeder
     public function run()
     {
 
+        $architectureDirectory = 'C:\Users\Manaf\Desktop\valeria\public\images\architecture';
+        $architectureImages = glob($architectureDirectory . "/*.*");
+        $this->convertName($architectureImages,$architectureDirectory);
+
+        $categoryDirectory = 'C:\Users\Manaf\Desktop\valeria\public\images\category';
+        $categoryImages = glob($categoryDirectory . "/*.*");
+        $this->convertName($categoryImages,$categoryDirectory);
+
+        $interiorDirectory = 'C:\Users\Manaf\Desktop\valeria\public\images\interior';
+        $interiorImages = glob($interiorDirectory . "/*.*");
+        $this->convertName($interiorImages,$interiorDirectory);
+
+        $landscapeDirectory = 'C:\Users\Manaf\Desktop\valeria\public\images\landscape';
+        $landscapeImages = glob($landscapeDirectory . "/*.*");
+        $this->convertName($landscapeImages,$landscapeDirectory);
+
+        $quickConsultingDirectory = 'C:\Users\Manaf\Desktop\valeria\public\images\quick consulting';
+        $quichConsultingImages = glob($quickConsultingDirectory . "/*.*");
+        $this->convertName($quichConsultingImages,$quickConsultingDirectory);
+
+        $this->convertNameInDb();
+
         $categories = Category::all();
         foreach ($categories as $category) {
             if ($category->parent_id == null || $category->parent_id == 2 || $category->parent_id == 124){
@@ -40,8 +62,8 @@ class ImagesSeeder extends Seeder
             if ($category->parent_id == 70 || $category->parent_id == 67 || $category->parent_id == 52 || $category->parent_id == 47
                 || $category->parent_id == 76 || $category->parent_id == 62 || $category->parent_id == 56 || $category->parent_id == 56 || $category->parent_id == 42 ||
                 $category->parent_id == 198 || $category->parent_id == 192 || $category->parent_id == 189 || $category->parent_id == 184
-                 || $category->parent_id == 164 || $category->parent_id == 169 || $category->parent_id == 174 || $category->parent_id == 178
-                 ) {
+                || $category->parent_id == 164 || $category->parent_id == 169 || $category->parent_id == 174 || $category->parent_id == 178
+            ) {
                 $category->update([
                     'image' => "images/architecture/" . $category->name . ".jpg",
                     'image_opacity' => "images/architecture/" . $category->name . "-opacity.jpg"
@@ -58,7 +80,7 @@ class ImagesSeeder extends Seeder
                 $category->update([
                     'image' => "images/quick consulting/" . $category->name . ".jpg",
                     'image_opacity' => "images/quick consulting/" . $category->name . "-opacity.jpg"
-                    ]);
+                ]);
             }
             if ($category->parent_id == 117 || $category->parent_id == 1){
                 $category->update([
@@ -66,10 +88,24 @@ class ImagesSeeder extends Seeder
                     'image_opacity' => "images/category/" . $category->name . "-opacity.jpg"
                 ]);
             }
+        }
+    }
 
+    private function convertName($imagesPaths, $path){
+        foreach($imagesPaths as $imagePath){
+            $imageName = basename($imagePath);
+            rename($imagePath, $path.'\\'.strtolower($imageName));
 
+        }
+    }
 
-
+    private function convertNameInDb(){
+        $categories =  Category::all();
+        foreach($categories as $category)
+        {
+            $category->update([
+                'name' => strtolower($category->name)
+            ]);
         }
     }
 

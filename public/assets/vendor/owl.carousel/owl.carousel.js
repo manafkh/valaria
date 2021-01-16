@@ -240,7 +240,7 @@
 	 * @readonly
 	 * @enum {String}
 	 */
-	Owl.Width = {
+	%Owl.Width = {
 		Default: 'default',
 		Inner: 'inner',
 		Outer: 'outer'

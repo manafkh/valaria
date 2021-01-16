@@ -7,9 +7,9 @@
 @section('content')
     <section id="breadcrumbs" class="breadcrumbs" >
         <div class="container">
-            <div class="row justify-content-center" style="font-family: 'Open Sans Semibold'">
+            <div class="row justify-content-center" >
                 <div class="col-md-8">
-                    <div class="card" style="box-shadow: -40px 13px 8px 7px currentColor;">
+                    <div class="card" style="    box-shadow: -8px 4px 8px 7px darkgrey;">
                         <div class="card-header"><h3 class="text-center">{{ __('Login') }}</h3></div>
 
                         <div class="card-body">
@@ -46,11 +46,11 @@
 
                                 <div class="form-group row">
                                     <div class="col-md-6 offset-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        <div class="form-check" >
+                                            <input class="form-check-input"   type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                            <label class="form-check-label" for="remember">
-                                                {{ __('Remember Me') }}
+                                            <label class="form-check-label" style="float:{{isArabic()? "right":""}}"  for="remember">
+                                                  {{ __('Remember Me') }}
                                             </label>
                                         </div>
                                     </div>
@@ -59,12 +59,12 @@
                                 <div class="form-group row mb-0">
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn" style="background:#0c0c0c; color: #e9e9e9;">
-                                            {{ __('Login') }}
+                                             {{  __('Login') }}
                                         </button>
 
                                         @if (Route::has('password.request'))
                                             <a class="btn" style="background:#0c0c0c; color: #e9e9e9;" href="{{ route('password.request') }}">
-                                                {{ __('Forgot Your Password?') }}
+                                                {{ __('Forgot Your Password ?') }}
                                             </a>
                                         @endif
                                     </div>

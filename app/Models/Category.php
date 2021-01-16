@@ -33,4 +33,7 @@ class Category extends Model
     public function questionnaires(){
         return $this->hasMany(Questionnaire::class);
     }
+    public function designers(){
+        return $this->hasMany(Designer::class);
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use File;
 
 class ProjectController extends Controller
 {
@@ -14,7 +16,19 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('users.Questionnaires.index');
+        $path = public_path('1');
+        $files = File::allfiles($path);
+        $dirs = $this->rglob( "1\Record\*",0);
+
+        return view('users.project.show',compact(['files','dirs']));
+    }
+    // Does not support flag GLOB_BRACE
+   public function rglob($pattern, $flags = 0) {
+        $files = glob($pattern, $flags);
+        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
+            $files = array_merge($files, $this->rglob($dir.'/'.basename($pattern), $flags));
+        }
+        return $files;
     }
 
     /**
