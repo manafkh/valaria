@@ -4,12 +4,15 @@
     <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
         <div class="container">
-
+            <br>
+            <br>
+            <br>
+            <br>
             <div class="portfolio-details-container text-right">
 
-                <div dir="auto" class="owl-carousel portfolio-details-carousel" style="max-height:1100px !important; max-width: 1100px !important;" >
+                <div dir="auto" class="owl-carousel portfolio-details-carousel" style="max-height:700px !important; max-width: 1100px !important;" >
                     @foreach($designer->files as $file)
-                    <img src="{{asset('Designer/'.$file->file)}}" class="img-fluid" style="vertical-align: middle;" alt="">
+                    <img src="{{asset('Designer/'.$file->file)}}" class="img-fluid" style="vertical-align: middle; max-height: 500px; " alt="">
                     @endforeach
                 </div>
 

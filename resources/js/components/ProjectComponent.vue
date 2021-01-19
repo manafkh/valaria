@@ -51,19 +51,19 @@
                         <div class="col-md-6 offset-md-3">
                             <div>
 
-                                <b-modal ref="my-modal"  center-header title="Information" hide-footer>
-                                    <div>
+                                <b-modal ref="my-modal"   hide-footer>
+                                    <div v-if="!success">
                                         <div v-if="errors.length" class="alert alert-dark" role="alert">
                                             <b>Please correct the following error(s):</b>
                                             <ul>
                                                 <li v-for="error in errors">{{ error }}</li>
                                             </ul>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" v-if="!auth">
                                             <div class="col">
                                                 <b-form-group
                                                         id="input-group-1"
-                                                        label="Email address:"
+                                                        label="Email address"
                                                         label-for="input-1"
                                                         description="We'll never share your email with anyone else."
                                                 >
@@ -79,7 +79,7 @@
                                             <div class="col">
                                                 <b-form-group
                                                         id="input-group-2"
-                                                        label=" Phone:"
+                                                        label=" Phone"
                                                         label-for="input-2"
                                                         description="We'll never share your Phone with anyone else."
                                                 >
@@ -96,7 +96,7 @@
 
                                         <b-form-group
                                                 id="input-group-3"
-                                                label="Address:"
+                                                label="Address"
                                                 label-for="input-3"
 
                                         >
@@ -110,7 +110,7 @@
                                             ></b-form-input>
                                         </b-form-group>
                                         <div v-if="styles.length !== 0">
-                                            <b-form-group  id="input-group-4" label="Style :" label-for="input-4">
+                                            <b-form-group  id="input-group-4" label="Style" label-for="input-4">
                                                 <b-form-select
                                                         id="input-4"
                                                         v-model="project.style_id"
@@ -121,7 +121,7 @@
                                                 ></b-form-select>
                                             </b-form-group>
                                         </div>
-                                        <b-form-group id="input-group-5" label="File" label-for="input-5">
+                                        <b-form-group id="input-group-5" label="Files" label-for="input-5">
                                             <b-form-file
                                                     id="input-5"
                                                     v-model="file"
@@ -146,6 +146,13 @@
                                             <b-button type="submit" @click="submit" pill align-v="text-center">Confirm</b-button>
                                         </div>
 
+                                    </div>
+                                    <div v-if="success">
+                                        <div class="card-body pt-0">
+                                            <h4 class="heading mb-4 pb-1 text-center">Confirmation</h4>
+                                            <p class="text-center">Form has been submitted Successfully ! <br>You will recieve estimation on your email id
+                                                and contact no.</p>
+                                        </div>
                                     </div>
                                 </b-modal>
                             </div>
@@ -180,19 +187,19 @@
                         <div class="col-md-6 offset-md-3">
                             <div>
 
-                                <b-modal ref="my-modal"  title="Information" hide-footer>
-                                    <div>
+                                <b-modal ref="my-modal"  hide-footer>
+                                    <div v-if="!success">
                                         <div v-if="errors.length" class="alert alert-dark" role="alert">
                                             <b>Please correct the following error(s):</b>
                                             <ul>
                                                 <li v-for="error in errors">{{ error }}</li>
                                             </ul>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" v-if="!auth">
                                             <div class="col">
                                                 <b-form-group
                                                         id="input-group-1"
-                                                        label="Email address:"
+                                                        label="Email address"
                                                         label-for="input-1"
                                                         description="We'll never share your email with anyone else."
                                                 >
@@ -208,7 +215,7 @@
                                             <div class="col">
                                                 <b-form-group
                                                         id="input-group-2"
-                                                        label=" Phone:"
+                                                        label=" Phone"
                                                         label-for="input-2"
                                                         description="We'll never share your Phone with anyone else."
                                                 >
@@ -225,7 +232,7 @@
 
                                         <b-form-group
                                                 id="input-group-3"
-                                                label="Address:"
+                                                label="Address"
                                                 label-for="input-3"
 
                                         >
@@ -249,7 +256,7 @@
                                                     required
                                             ></b-form-select>
                                         </b-form-group>
-                                        <b-form-group id="input-group-5" label="File" label-for="input-5">
+                                        <b-form-group id="input-group-5" label="Files" label-for="input-5">
                                             <b-form-file
                                                     id="input-5"
                                                     v-model="file"
@@ -270,8 +277,17 @@
                                             ></b-form-textarea>
                                         </b-form-group>
 
-                                        <b-button type="submit" @click="submit" pill class="text-center">Confirm</b-button>
+                                        <div class="text-center">
+                                            <b-button type="submit" @click="submit" pill align-v="text-center">Confirm</b-button>
+                                        </div>
 
+                                    </div>
+                                    <div v-if="success">
+                                        <div class="card-body pt-0">
+                                            <h4 class="heading mb-4 pb-1 text-center">Confirmation</h4>
+                                            <p class="text-center">Form has been submitted Successfully ! <br>You will recieve estimation on your email id
+                                                and contact no.</p>
+                                        </div>
                                     </div>
                                 </b-modal>
                             </div>
@@ -306,7 +322,7 @@
                         <div class="col-md-6 offset-md-3">
                             <div>
 
-                                <b-modal ref="my-modal"  title-center="Information" hide-footer>
+                                <b-modal ref="my-modal"  hide-footer>
                                     <div v-if="!success">
                                         <div v-if="errors.length" class="alert alert-dark" role="alert">
                                             <b>Please correct the following error(s):</b>
@@ -314,11 +330,11 @@
                                                 <li v-for="error in errors">{{ error }}</li>
                                             </ul>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" v-if="!auth">
                                             <div class="col">
                                                 <b-form-group
                                                         id="input-group-1"
-                                                        label="Email address:"
+                                                        label="Email address"
                                                         label-for="input-1"
                                                         description="We'll never share your email with anyone else."
                                                 >
@@ -334,7 +350,7 @@
                                             <div class="col">
                                                 <b-form-group
                                                         id="input-group-2"
-                                                        label=" Phone:"
+                                                        label=" Phone"
                                                         label-for="input-2"
                                                         description="We'll never share your Phone with anyone else."
                                                 >
@@ -351,7 +367,7 @@
 
                                         <b-form-group
                                                     id="input-group-3"
-                                                    label="Address:"
+                                                    label="Address"
                                                     label-for="input-3"
 
                                             >
@@ -365,7 +381,7 @@
                                             ></b-form-input>
                                         </b-form-group>
 
-                                        <b-form-group v-if="styles.length" id="input-group-4" label="Style :" label-for="input-4">
+                                        <b-form-group v-if="styles.length" id="input-group-4" label="Style" label-for="input-4">
                                             <b-form-select
                                                     id="input-4"
                                                     v-model="project.style_id"
@@ -377,7 +393,7 @@
 
                                         </b-form-group>
 
-                                        <b-form-group id="input-group-5" label="File" label-for="input-5">
+                                        <b-form-group id="input-group-5" label="Files" label-for="input-5">
                                             <b-form-file
                                                     id="input-5"
                                                     v-model="file"
@@ -398,8 +414,9 @@
                                             ></b-form-textarea>
                                         </b-form-group>
 
-
-                                        <b-button  type="submit" @click="submit" pill class="text-center">Confirm</b-button>
+                                        <div class="text-center">
+                                            <b-button type="submit" @click="submit" pill align-v="text-center">Confirm</b-button>
+                                        </div>
 
                                     </div>
                                     <div v-if="success">
@@ -436,6 +453,7 @@
     export default {
         data() {
             return {
+                auth:false,
                 success:false,
                 file:[],
                 successes:[],
@@ -467,7 +485,8 @@
             }
         },
         created(){
-            this.getchild(parent)
+            this.getchild(parent);
+            this.isAuth();
 
         },
         methods:{
@@ -478,7 +497,7 @@
                     this.steps.pop();
                     this.step--;
                     this.isLoading = false;
-                },1000)
+                },3000)
             },
             next(parent) {
 
@@ -492,7 +511,7 @@
                         this.step++;
                         this.steps.push(parent);
                         this.isLoading = false;
-                    },1000);
+                    },3000);
                 }
             },
             submit(e) {
@@ -511,31 +530,31 @@
                 const config = {
                     headers: { 'content-type': 'multipart/form-data' }
                 };
-
-                if (this.project.email && this.project.phone) {
+                if(!this.auth ){
+                    if ( this.project.email && this.project.phone) {
+                        axios.post('createproject',formData,config).then(res =>{
+                            this.success = true;
+                        }).catch(err=>{
+                            this.errors.push(err);
+                        });
+                    }
+                    this.errors = [];
+                    if (!this.project.email) {
+                        this.errors.push('Email Address required.');
+                    }
+                    if (!this.project.phone) {
+                        this.errors.push('Phone Number required.');
+                    }
+                }else{
                     axios.post('createproject',formData,config).then(res =>{
-                        // this.isLoading = true;
-                        // setTimeout(() => {
-                        //     this.step = 4;
-                        //     this.isLoading = false;
-                        // },1000);
+
                         this.success = true;
 
                     }).catch(err=>{
-                       this.errors.push(err);
+                        this.errors.push(err);
                     });
-
-                }
-
-                this.errors = [];
-                if (!this.project.email) {
-                    this.errors.push('Email Address required.');
-                }
-                if (!this.project.phone) {
-                    this.errors.push('Phone Number required.');
                 }
                 e.preventDefault();
-
             },
             getchild(){
                 axios.get('category').then(response=>{
@@ -546,11 +565,15 @@
             getstyle(style_id){
                 axios.get('styles/'+ style_id).then(res=>{
                     this.styles = res.data;
-
                 })
             },
             sum(){
                 this.project.budget = this.budgets.budget_from + '-'+ this.budgets.budget_to +'$' ;
+            },
+            isAuth(){
+              axios.get('isAuth').then(res=>{
+                  this.auth = res.data;
+              })
             },
             onCancel() {
                 console.log('User cancelled the loader.')

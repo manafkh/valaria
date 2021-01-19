@@ -17,8 +17,7 @@ class CreateQuestionnairesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('style_id')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->string('project_description')->nullable();
             $table->string('project_address')->nullable();
             $table->timestamps();
@@ -32,6 +31,7 @@ class CreateQuestionnairesTable extends Migration
                 ->references('id')
                 ->on('styles')
                 ->onDelete('cascade');
+
         });
     }
 

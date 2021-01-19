@@ -22,4 +22,8 @@ class Style extends Model
     public function categories(){
         return $this->belongsToMany(Category::class,'category_styles','style_id','category_id');
     }
+
+    public function projects(){
+        return $this->hasMany(Project::class);
+    }
 }

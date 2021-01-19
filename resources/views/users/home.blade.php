@@ -13,7 +13,7 @@
             <a href="{{route('questionnaires.index')}}" class="btn-get-started" style="float: {{isArabic()?"right":""}};">{{__('Get Started')}}</a>
         </div>
     </section>
-
+@if($models->count() > 1)
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">
         <div class="container">
@@ -52,8 +52,8 @@
         </div>
 
     </section><!-- End Services Section -->
-
-
+@endif
+@if($designers->count() > 1)
     <section id="portfolio" class="portfolio">
         <div class="container">
 
@@ -94,8 +94,9 @@
 
         </div>
     </section>
-
+@endif
     <!-- ======= Team Section ======= -->
+    @if($teams->count() > 1)
     <section id="team" class="team">
         <div class="container">
 
@@ -138,6 +139,9 @@
             </div>
 
         </div>
-    </section><!-- End Team Section -->
+
+           </section>
+    <!-- End Team Section -->
+    @endif
 @endsection
 

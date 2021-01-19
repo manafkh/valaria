@@ -20,6 +20,7 @@ class CreateProjectsTable extends Migration
             $table->string('files');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('style_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('category_id')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriesController extends Controller
 {
@@ -23,6 +24,14 @@ class CategoriesController extends Controller
     public function styles($id){
         $category_styles = Category::find($id);
         return response()->json($category_styles->styles);
+    }
+
+    public function isAuth(){
+        if(Auth::check()){
+            return response()->json(true);
+        }else{
+            return response()->json(false);
+        }
     }
 
 }

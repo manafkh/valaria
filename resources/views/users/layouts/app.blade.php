@@ -87,21 +87,35 @@
                   <a class="toto" href="{{ route('register') }}">{{ __('Register') }}</a>
                 </li>
               @endif
-                  @php $locale = session()->get('locale'); @endphp
+
                 <li class="nav-item"><a class="toto" href="{{route('questionnaires.index')}}">{{__('Questionnaires')}}</a></li>
-                  <li class="drop-down nav-item"><a class="toto" href="#">{{__('Language')}}</a>
-                  <ul style="width: 110px;">
-                      <li><a class="toto {{isArabic()? "text-right":""}}" href="lang/ar">{{__('Arabic')}}    <img src="{{asset('assets/img/ar.png')}}" width="30px" height="20x"></a></li>
-                      <hr>
-                      <li><a class="toto {{isArabic()? "text-right":""}}" href="lang/en">{{__('English')}} <img src="{{asset('assets/img/us.jpg')}}" width="30px" height="20x"></a></li>
-                  </ul>
+
+                  @php $locale = session()->get('locale'); @endphp
+                  <li class="nav-item dropdown">
+                      <a id="navbarDropdown" class="toto dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          @switch($locale)
+                              @case('ar')
+                              <img src="{{asset('assets/img/ar.png')}}" width="30px" height="20x"> {{__('Arabic')}}
+                              @break
+                              @default('en')
+                              <img src="{{asset('assets/img/us.jpg')}}" width="30px" height="20x"> {{__('English')}}
+
+                          @endswitch
+                      </a>
+
+                      <div class="dropdown-menu" style="background: #0c0c0c; width:50px;" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item toto {{isArabic()? "text-right":""}}" href="lang/en"><img src="{{asset('assets/img/us.jpg')}}" width="30px" height="20x">  {{__('English')}}</a>
+                          <hr>
+                          <a class="dropdown-item toto {{isArabic()? "text-right":""}}" href="lang/ar"><img src="{{asset('assets/img/ar.png')}}" width="30px" height="20x">  {{__('Arabic')}}</a>
+                      </div>
                   </li>
+
           @else
           <li class="nav-item"><a class="toto" href="{{route('users.home')}}">{{__('Home')}}</a> </li>
           <li><a class="toto" href="{{route('profiles.index')}}">{{__('Profile')}}</a></li>
           <li><a class="toto" href="{{route('questionnaires.index')}}">{{__('Questionnaires')}}</a></li>
             <li class="nav-item">
-                <a class="toto"href="{{ route('logout') }}"
+                <a class="toto" href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                   {{ __('Logout') }}
                 </a>
@@ -109,12 +123,24 @@
                   @csrf
                 </form>
             </li>
-                <li class="drop-down nav-item"><a class="toto" href="#">{{__('Language')}}</a>
-                    <ul style="width: 110px;">
-                        <li><a class="toto {{isArabic()? "text-right":""}}" href="lang/ar">{{__('Arabic')}}    <img src="{{asset('assets/img/ar.png')}}" width="30px" height="20x"></a></li>
+                @php $locale = session()->get('locale'); @endphp
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="toto dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @switch($locale)
+                            @case('ar')
+                            <img src="{{asset('assets/img/ar.png')}}" width="30px" height="20x"> {{__('Arabic')}}
+                            @break
+                            @default('en')
+                            <img src="{{asset('assets/img/us.jpg')}}" width="30px" height="20x"> {{__('English')}}
+
+                        @endswitch
+                    </a>
+
+                    <div class="dropdown-menu" style="background: #0c0c0c; width:50px;" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item toto {{isArabic()? "text-right":""}}" href="lang/en"><img src="{{asset('assets/img/us.jpg')}}" width="30px" height="20x">  {{__('English')}}</a>
                         <hr>
-                        <li><a class="toto {{isArabic()? "text-right":""}}" href="lang/en">{{__('English')}} <img src="{{asset('assets/img/us.jpg')}}" width="30px" height="20x"></a></li>
-                    </ul>
+                        <a class="dropdown-item toto {{isArabic()? "text-right":""}}" href="lang/ar"><img src="{{asset('assets/img/ar.png')}}" width="30px" height="20x">  {{__('Arabic')}}</a>
+                    </div>
                 </li>
 
           @endguest
@@ -212,6 +238,9 @@
   <script src="{{asset('assets/js/main.js')}}"></script>
   <script src="{{asset('js/app.js')}}"></script>
   <script src="{{asset('js/index.js')}}" type="text/javascript"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 
 </body>
 

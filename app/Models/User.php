@@ -44,6 +44,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function questionnaires(){
+        return $this->hasMany(Questionnaire::class);
+    }
+
+    public function projects(){
+        return $this->hasMany(Project::class);
+    }
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
@@ -51,5 +58,13 @@ class User extends Authenticatable
 
     public function notificationsCount(){
        return $this->notifications()->count();
+    }
+
+    public static function  AccountCreated($email){
+        if(User::where('email','=',$email)->exists()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

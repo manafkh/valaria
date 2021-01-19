@@ -3,36 +3,34 @@
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title text-center"><strong>{{$questionnaire->project_name}}</strong></h5>
-            <p class="card-text"><strong class="text-center">{{__('Category')}} : </strong>{{$questionnaire->category->name}}</p>
-            <p class="card-text"><strong class="text-center">{{__('Description')}} : </strong><small>{{$questionnaire->project_description}}</small></p>
-            <hr>
-            @if($questionnaire->references)
-                <p class="text-center">{{__('References')}}</p>
-                @foreach($questionnaire->references as $reference)
-                    <tr>
-                        <a href="{{$reference->link}}">{{$reference->link}}</a>
-                    </tr>
-                    @endforeach
-            @else
-                <p class="text-center">{{__('No Reference')}}</p>
-            @endif
-            <hr>
 
+            <p class="{{isArabic()?"text-right":""}}"><strong class="text-center">{{__('Category')}} : </strong>{{$questionnaire->category->name}}</p><hr>
+            <p class="{{isArabic()?"text-right":""}}"><strong class="text-center">{{__('Description')}} : </strong><small>{{$questionnaire->project_description}}</small></p>
+            <hr>
             @if($questionnaire->files)
-                <p class="text-center">{{__('Files')}}</p>
+                <h6 class="text-center"><strong>{{__('Files')}}</strong></h6>
+            <hr>
                 @foreach($questionnaire->files as $file)
-                    <tr>
-                        <a class="text-center row" href="{{asset('upload/'. $file->file)}}">{{$file->file}}</a>
-                    </tr>
+                    <div class="text-center">
+                        <a href="{{asset('upload/'. $file->file)}}">{{$file->file}}</a>
+                    </div>
                 @endforeach
             @else
-                <p class="text-center">{{__('No File')}}</p>
+                <h6 class="text-center"><strong>{{__('No File')}}</strong></h6>
+                <hr>
             @endif
 
             <hr>
-            <a href="#" class="btn btn-primary pull-left"><span class="icofont-edit"></span> {{__('Edit')}}</a>
-            <a href="#" class="btn btn-danger pull-right"><span class="icofont-delete"></span>{{__('Delete')}}</a>
+            <div class="text-center">
+                <a hidden="" href="#" class="btn" style="background: #0c0c0c; color: #e9e9e9; " ><li class="fa fa-edit"></li> {{__('Edit')}}</a>
+                {{--<a href="#" class="btn" style="background: #0c0c0c; color: #e9e9e9;"><i class="fa fa-trash" aria-hidden="true"></i> {{__('Delete')}}</a>--}}
+                <form action="{{route('questionnaires.destroy',$questionnaire->id)}}" method="POST">
+                    @CSRF
+                    @method('DELETE')
+                    <button class="btn " style="background: #0c0c0c; color: #e9e9e9;" ><i class="fa fa-trash" aria-hidden="true"></i> {{__('Delete')}}</button>
+                </form>
+            </div>
+
 
         </div>
     </div>

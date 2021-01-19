@@ -14,22 +14,12 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function showProject($id)
     {
-        $path = public_path('1');
-        $files = File::allfiles($path);
-        $dirs = $this->rglob( "1\Record\*",0);
 
-        return view('users.project.show',compact(['files','dirs']));
     }
-    // Does not support flag GLOB_BRACE
-   public function rglob($pattern, $flags = 0) {
-        $files = glob($pattern, $flags);
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
-            $files = array_merge($files, $this->rglob($dir.'/'.basename($pattern), $flags));
-        }
-        return $files;
-    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -58,9 +48,19 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show($id)
     {
-        //
+        $project = Project::find($id);
+        $dirs = $this->rglob( $id."\Record\*",0);
+        return view('users.project.show',compact(['dirs','project']));
+    }
+
+    public function rglob($pattern, $flags = 0) {
+        $files = glob($pattern, $flags);
+        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
+            $files = array_merge($files, $this->rglob($dir.'/'.basename($pattern), $flags));
+        }
+        return $files;
     }
 
     /**

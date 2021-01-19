@@ -1,18 +1,20 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+
 use App\Http\Controllers\ProfileControler;
 use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
-use App\Models\CategoryDetails;
+
+
+use App\Models\Designer;
 use App\Models\Team;
 use App\Models\ThreeDModel;
-use Illuminate\Support\Facades\App;
+
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
+
 use Illuminate\Support\Facades\Route;
-use PhpParser\Node\Expr\Array_;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +44,9 @@ Route::get('/', function () {
 
     $categories = Category::where('parent_id',1)->get();
     $models = ThreeDModel::paginate(6);
+    $designers = Designer::all();
     $teams = Team::all();
-    return view('users.home',compact(['categories','teams','models']));
+    return view('users.home',compact(['categories','teams','models','designers']));
 })->name('users.home');
 
 Route::get('lang/{locale}', function ($locale) {
@@ -51,18 +54,10 @@ Route::get('lang/{locale}', function ($locale) {
     return redirect()->back();
 });
 
-//Route::get('/ee', function () {
-//  $dir = public_path('issue');
-//    $dirs = glob('1\*',GLOB_ONLYDIR);
-//    print_r($dirs);
-//});
-//
-//Route::get('dir/{dir}',function ($dir){
-//    $dirs = glob($dir.'/*',GLOB_ONLYDIR|GLOB_NOSORT);
-//    dd($dirs);
-//    return view('dir');
-//});
 
+Route::get('directory/{dir}',[\App\Http\Controllers\DirectoryController::class,'getDir'])->name('openDir');
+Route::post('dir/{dir}',[\App\Http\Controllers\DirectoryController::class,'upload'])->name('upload.file');
+Route::get('download/{down}',[\App\Http\Controllers\DirectoryController::class,'download'])->name('down');
 
 
 Route::get('payment/{id}', [\App\Http\Controllers\PayPalController::class,'payment'])->name('payment');
@@ -76,3 +71,6 @@ Route::get('/grandparent/{id}', [\App\Http\Controllers\CategoriesController::cla
 Route::get('category', [\App\Http\Controllers\CategoriesController::class, 'parent'])->name('parent');
 Route::post('createproject', [\App\Http\Controllers\QuestionnaireController::class, 'store']);
 Route::get('/styles/{id}', [\App\Http\Controllers\CategoriesController::class, 'styles'])->name('styles');
+
+Route::get('isAuth', [\App\Http\Controllers\CategoriesController::class, 'isAuth'])->name('isAuth');
+

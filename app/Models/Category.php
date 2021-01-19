@@ -36,4 +36,7 @@ class Category extends Model
     public function designers(){
         return $this->hasMany(Designer::class);
     }
+    public function projects(){
+        return $this->hasMany(Project::class);
+    }
 }
